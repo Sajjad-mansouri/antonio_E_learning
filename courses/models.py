@@ -14,6 +14,13 @@ class Subject(models.Model):
 	def __str__(self):
 		return self.title
 
+class MyInteger(models.PositiveIntegerField):
+	def __init__(self,*args,**kwargs):
+		super().__init__(*args,**kwargs)
+
+	def pre_save(self,model_instance,add):
+		print(self.attname)
+		return super().pre_save(model_instance, add)
 
 
 class Course(models.Model):
