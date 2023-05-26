@@ -1,0 +1,31 @@
+{%extends 'base.html'%}
+
+{%block title%}
+{%if object%}
+update: {{object.title}}
+{%else%}
+create new course
+{%endif%}
+{%endblock%}
+
+{%block content%}
+<div>
+	<h1>
+		{%if object%}
+update: {{object.title}}
+{%else%}
+create new course
+{%endif%}
+
+</h1>
+	<form method='post'>
+		<h2>course info:</h2>
+		{%csrf_token%}
+		{{form}}
+		
+		<input type="submit" value='save course'>
+		
+	</form>
+		
+</div>
+{%endblock%}

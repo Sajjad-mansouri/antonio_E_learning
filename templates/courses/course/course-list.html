@@ -1,0 +1,20 @@
+{%extends 'base.html'%}
+
+{%block title%}
+course list
+{%endblock%}
+
+{%block content%}
+{%for object in object_list%}
+    <div class="cart">
+      
+      <h1>{{object.title}}</h1>
+      <p>{{object.overview}}</p>
+      <a href="{%url 'course-update' object.pk%}">Edit</a>
+      <a href="{%url 'course-delete' object.pk%}">delete</a>
+      
+    </div>
+    {%empty%}
+    there is no course 
+  {%endfor%}
+{%endblock%}

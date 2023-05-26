@@ -1,0 +1,19 @@
+{%extends 'base.html'%}
+
+{%block title%}
+delete course
+{%endblock%}
+
+{%block content%}
+
+<div>
+	<h1>Delete course</h1>
+	<form method='post'>
+		{%csrf_token%}
+		<p>are you sure to delete this {{object.title}}</p>
+		<input type="submit" value='delete'>
+	</form>
+</div>
+
+
+{%endblock%}
