@@ -13,7 +13,7 @@ class ModuleInline(admin.StackedInline):
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-	list_display=['title','subject','owner','created']
+	list_display=['pk','title','subject','owner','created']
 	list_filter=['created','subject']
 	search_fields=['title','Subject','owner','overview']
 	inlines=[ModuleInline]

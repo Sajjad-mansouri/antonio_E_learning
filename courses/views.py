@@ -2,7 +2,9 @@ from django.shortcuts import render
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView,UpdateView,DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
-from django.urls import reverse_lazy
+from django.shortcuts import get_object_or_404
+from django.urls import reverse_lazy,reverse
+from .forms import Modul_Formset
 from .models import Course
 
 
@@ -44,3 +46,30 @@ class CourseDeleteView(OwnerCourseMixin,DeleteView):
 		permission_required='courses.delete_course'
 
 
+
+class CourseModule(UpdateView):
+	template_name='courses/module/formset.html'
+	# success_url=reverse_lazy('course-list')
+
+	def get_form(self):
+		return Modul_Formset(**self.get_form_kwargs())
+
+	def get_form_kwargs(self):
+		kwargs={}
+		if self.request.method in ("POST", "PUT"):
+			kwargs.update(
+				{
+					"data": self.request.POST,
+					"files": self.request.FILES,
+				}
+			)
+		object=self.get_object()
+		kwargs.update({'instance':object})
+		return kwargs
+	def get_object(self):
+		pk = self.kwargs.get(self.pk_url_kwarg)
+		obj=get_object_or_404(Course,pk=pk)
+		return obj
+
+	def get_success_url(self):
+		return reverse('course-list')

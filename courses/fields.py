@@ -9,7 +9,6 @@ class OrderField(models.PositiveIntegerField):
 
 	def pre_save(self,model_instance,add):
 		if getattr(model_instance,self.attname) is None:
-			print(model_instance)
 			try:
 				
 				qs=self.model.objects.all()
@@ -18,7 +17,9 @@ class OrderField(models.PositiveIntegerField):
 					qs=qs.filter(**query)
 				last_item=qs.latest(self.attname)
 				value=last_item.order+1
+
 			except ObjectDoesNotExist:
+
 				value=0
 
 			setattr(model_instance,self.attname,value)
@@ -26,4 +27,5 @@ class OrderField(models.PositiveIntegerField):
 
 
 		else:
-			super().pre_save(model_instance,add)
+
+			return super().pre_save(model_instance,add)

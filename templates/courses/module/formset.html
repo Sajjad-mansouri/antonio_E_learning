@@ -2,9 +2,9 @@
 
 {%block title%}
 {%if object%}
-update: {{object.title}}
+Update Module: {{object.title}}
 {%else%}
-create new course
+create Module
 {%endif%}
 {%endblock%}
 
@@ -16,14 +16,14 @@ update: {{object.title}}
 {%else%}
 create new course
 {%endif%}
-<p><a href="{%url 'course-module' object.pk %}">Modules</a></p>
+
 </h1>
 	<form method='post'>
 		<h2>course info:</h2>
 		{%csrf_token%}
 		{{form}}
 		
-		<input type="submit" value='save course'>
+		<input type="submit" value='save modules'>
 		
 	</form>
 		
