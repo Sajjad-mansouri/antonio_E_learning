@@ -17,3 +17,7 @@ class CourseAdmin(admin.ModelAdmin):
 	list_filter=['created','subject']
 	search_fields=['title','Subject','owner','overview']
 	inlines=[ModuleInline]
+
+@admin.register(Module)
+class ModuleAdmin(admin.ModelAdmin):
+	list_display=['pk','title']

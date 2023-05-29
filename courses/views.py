@@ -4,12 +4,12 @@ from django.views.generic.edit import CreateView,UpdateView,DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
 from django.views.generic.base import TemplateResponseMixin
 from django.views import View
-from django.forms import modelformset_factory
-from django.shortcuts import get_object_or_404
-from django.apps import app
+from django.forms.models import modelform_factory
+from django.shortcuts import get_object_or_404,redirect
+from django.apps import apps
 from django.urls import reverse_lazy,reverse
 from .forms import Modul_Formset
-from .models import Course,Content
+from .models import Course,Content,Module
 
 
 
@@ -81,7 +81,9 @@ class CourseModule(UpdateView):
 
 class CourseContent(TemplateResponseMixin,View):
 	template_name='courses/content/content.html'
-
+	obj=None
+	module=None
+	model=None
 	def get_model(self,model_name):
 		if model_name in ['text', 'video', 'image', 'file']:
 			return apps.get_model(app_label='courses',model_name=model_name)
@@ -96,8 +98,8 @@ class CourseContent(TemplateResponseMixin,View):
 		return super().dispatch(request,module_id,model_name,id)
 
 	def get_form(self,model,*args,**kwargs):
-		form=modelformset_factory(model,exclude=['owner','created','updated','order'])
-		return form(*args,**kwargs)
+		Form=modelform_factory(model,exclude=['owner','created','updated','order'])
+		return Form(*args,**kwargs)
 
 	def get(self,request,module_id,model_name,id=None):
 		form=self.get_form(self.model,instance=self.obj)
@@ -112,7 +114,6 @@ class CourseContent(TemplateResponseMixin,View):
 			if not id:
 				Content.objects.create(module=self.module,content_object=obj)
 
-			return redirect('content-list',self.module_id)
+			return redirect('content-list',self.module.id)
 		else:
 			return self.render_to_response({'form':form,'object':self.obj})
-
