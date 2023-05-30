@@ -10,16 +10,9 @@ create new course
 
 {%block content%}
 <div>
-	<h1>
-		{%if object%}
-update: {{object.title}}
-{%else%}
-create new course
-{%endif%}
-<p><a href="{%url 'course-module' object.pk %}">Modules</a></p>
-</h1>
+
 	<form method='post'>
-		<h2>course info:</h2>
+		<h2>Module info:</h2>
 		{%csrf_token%}
 		{{form}}
 		

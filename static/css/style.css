@@ -168,3 +168,9 @@ span.psw {
      width: 100%;
   }
 }
+
+
+p.active{
+  color:red;
+  cursor: none;
+}

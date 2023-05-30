@@ -1,0 +1,51 @@
+{%extends 'base.html'%}
+
+{%block title%}
+Module:{{module.title}} content
+{%endblock%}
+
+{%block content%}
+<div>
+	<h1> Module {{module.order|add:1}}:{{module.title}}</h1>
+
+{%for content in module.contents.all%}
+<p>{{content.content_object.title}}</p>
+	<form method='post' action="{%url 'content-delete' content.id %}">
+		{%csrf_token%}
+    		<input type="submit" value='delete'>
+		
+    </form>
+    
+   {%empty%}
+   <p>there is no content in this module</p>
+
+{%endfor%}
+		
+</div>
+<a href="{%url 'content-create' module.id 'text' %}">add text</a>
+<a href="{%url 'content-create' module.id 'video' %}">add video</a>
+<a href="{%url 'content-create' module.id 'image' %}">add image</a>
+<a href="{%url 'content-create' module.id 'file' %}">add file</a>
+{%endblock%}
+
+
+    {%block sidebar%}
+
+    {%with course=module.course%}
+     <h1>Course:{{course.title}}</h1>
+    <h2 ><a href="{%url 'course-module' course.pk %}">add module</a></h2>
+    
+     <div>
+    {%for m in course.modules.all%}
+   
+    	<p {%if m.title == module.title%}class ='active'{%endif%}><a href="{%url 'content-list' m.pk %}">{{m.title}}</a></p>
+    	
+    	
+   
+    {%endfor%}
+    <a href="{%url 'course-module' course.pk %}">edit</a>
+    </div>
+     {%endwith%}
+
+
+  {%endblock%}
