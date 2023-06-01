@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.views.generic import ListView,DetailView
 from django.views.generic.edit import CreateView,UpdateView,DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
 from django.views.generic.base import TemplateResponseMixin
@@ -8,8 +8,9 @@ from django.forms.models import modelform_factory
 from django.shortcuts import get_object_or_404,redirect
 from django.apps import apps
 from django.urls import reverse_lazy,reverse
+from django.db.models import Count
 from .forms import Modul_Formset
-from .models import Course,Content,Module
+from .models import Course,Content,Module,Subject
 
 
 
@@ -29,13 +30,13 @@ class OwnerCourseMixin(OwnerMixin,LoginRequiredMixin,PermissionRequiredMixin):
 	success_url=reverse_lazy('course-list')
 
 class OwnerCourseEditMix(OwnerCourseMixin,OwnerEditMixin):
-	template_name='courses/course/course-form.html'
+	template_name='courses/course/manage/course-form.html'
 
 
 
 
-class CourseListView(OwnerCourseMixin,ListView):
-	template_name='courses/course/course-list.html'
+class CourseManageView(OwnerCourseMixin,ListView):
+	template_name='courses/course/manage/course-list.html'
 	permission_required='courses.view_course'
 
 class CourseCreateView(OwnerCourseEditMix,CreateView):
@@ -46,7 +47,7 @@ class CourseUpdateView(OwnerCourseEditMix,UpdateView):
 
 
 class CourseDeleteView(OwnerCourseMixin,DeleteView):
-		template_name='courses/course/course-delete.html'
+		template_name='courses/course/manage/course-delete.html'
 		permission_required='courses.delete_course'
 
 
@@ -132,3 +133,23 @@ class ModuleContentListView(TemplateResponseMixin,View):
 	def get(self,request,module_id):
 		module=get_object_or_404(Module,id=module_id,course__owner=request.user)
 		return self.render_to_response({'module':module})
+
+
+
+class CourseListView(TemplateResponseMixin,View):
+	template_name='courses/course/list.html'
+
+	def get(self,request,subject=None):
+		subjects=Subject.objects.annotate(total_courses=Count('courses'))
+		courses=Course.objects.annotate(total_module=Count('modules'))
+
+		if subject:
+			subject=get_object_or_404(Subject,slug=subject)
+			courses=Course.objects.filter(subject=subject)
+
+		return self.render_to_response({'subjects':subjects,'courses':courses,'subject':subject})
+
+
+class CourseDetailView(DetailView):
+	model=Course
+	template_name='courses/course/detail.html'

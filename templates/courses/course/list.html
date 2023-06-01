@@ -1,0 +1,28 @@
+{%extends 'base.html'%}
+
+
+{%block content%}
+
+
+
+{%for course in courses%}
+<h2>{{course.subject}}</h2>
+<p><a href="{%url 'course-detail' course.slug %}">{{course.title}}</a>, {{course.total_module}} module{{course.total_module|pluralize}},instructor:{{course.owner.get_full_name}}</p>
+{%endfor%}
+
+{%endblock%}
+
+
+{%block sidebar%}
+    <div>
+      <h1>Subjects:</h1>
+      <a href="{%url 'courses' %}">all</a>
+      {%for subject in subjects%}
+      <p><a href="{%url 'subject-course-list' subject.slug %}">{{subject.title}} ({{subject.total_courses}} course{{ subject.total_courses|pluralize }})</a></p>
+
+      {%endfor%}
+      
+    </div>
+ 
+  </div>
+{%endblock%}
