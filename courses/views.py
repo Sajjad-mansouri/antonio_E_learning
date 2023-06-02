@@ -11,7 +11,7 @@ from django.urls import reverse_lazy,reverse
 from django.db.models import Count
 from .forms import Modul_Formset
 from .models import Course,Content,Module,Subject
-
+from students.forms import CourseEnrollForm
 
 
 class OwnerMixin:
@@ -153,3 +153,7 @@ class CourseListView(TemplateResponseMixin,View):
 class CourseDetailView(DetailView):
 	model=Course
 	template_name='courses/course/detail.html'
+	def get_context_data(self,**kwargs):
+		context=super().get_context_data(**kwargs)
+		context['form']=CourseEnrollForm(initial={'course':self.object})
+		return context
