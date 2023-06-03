@@ -5,7 +5,9 @@ from django.views.generic.edit import CreateView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate,login
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView, DetailView
 from .forms import CourseEnrollForm
+from courses.models import Course
 
 
 class StudentRegistrationView(CreateView):
@@ -35,4 +37,34 @@ class StudentEnrollCourseView(LoginRequiredMixin,FormView):
 		return super().form_valid(form)
 
 	def get_success_url(self):
-		return reverse('courses')
+		return reverse('student-course-list')
+
+
+
+class StudentCourseListView(LoginRequiredMixin,ListView):
+	model=Course
+	template_name='students/student/course-list.html'
+
+	def get_queryset(self):
+		qs=super().get_queryset()
+		return qs.filter(students__in=[self.request.user])
+
+
+class StudentCourseDetailView(LoginRequiredMixin,DetailView):
+	model=Course
+	template_name='students/student/course-detail.html'
+
+	def get_queryset(self):
+		qs=super().get_queryset()
+		return qs.filter(students__in=[self.request.user])		
+
+	def get_context_data(self,*args,**kwargs):
+		context=super().get_context_data(*args,**kwargs)
+		course=self.get_object()
+		if 'module_id' in self.kwargs:
+			context['module']=course.modules.get(id=self.kwargs['module_id'])
+
+		else:
+			context['module']=course.modules.all()[0]
+
+		return context

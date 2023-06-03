@@ -1,0 +1,17 @@
+{%extends 'base.html' %}
+{%block title%}
+My Course
+{%endblock%}
+
+
+{%block content%}
+
+{%for course in object_list%}
+<h1>{{course.title}}</h1>
+<p><a href="{%url 'student-course-detail' course.id %}">access course</a> </p>
+{%empty%}
+<p>there is no  enrolled course</p>
+<p>for enroll  explore <a href="{%url 'course-list'%}">Courses</a></p>
+{%endfor%}
+
+{%endblock%}

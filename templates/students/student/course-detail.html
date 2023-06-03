@@ -1,0 +1,22 @@
+{%extends 'base.html' %}
+{%block title%}
+course:{{object.title}}
+{%endblock%}
+
+
+{%block content%}
+<h1>{{object.title}}:</h1>
+
+
+<ul>{%for mod in object.modules.all%}
+	<li><a href="{%url 'student-course_detail-module' object.id mod.id %}">{{mod.order|add:1}}:{{mod.title}}</a></li>
+	{%empty%}
+	<li>there is no module</li>
+	{%endfor%}
+</ul>
+<hr>
+
+
+
+
+{%endblock%}
