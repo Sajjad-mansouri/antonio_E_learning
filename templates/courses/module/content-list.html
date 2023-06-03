@@ -17,7 +17,8 @@ Module:{{module.title}} content
     		<input type="submit" value='delete'>
 		
     </form>
-    <a href="{%url 'content-update' module.id content.content_object|get_model content.id  %}">edit</a>
+
+    <a href="{%url 'content-update' module.id content.content_object|get_model content.object_id  %}">edit</a>
 
    {%empty%}
    <p>there is no content in this module</p>

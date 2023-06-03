@@ -94,8 +94,10 @@ class CourseContent(TemplateResponseMixin,View):
 	def dispatch(self,request,module_id,model_name,id=None):
 		self.module=get_object_or_404(Module,id=module_id,course__owner=request.user)
 		self.model=self.get_model(model_name)
+		print(self.model)
 		if id:
 			self.obj=get_object_or_404(self.model,id=id,owner=request.user)
+		print('dispatch')
 		return super().dispatch(request,module_id,model_name,id)
 
 	def get_form(self,model,*args,**kwargs):

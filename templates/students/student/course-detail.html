@@ -3,7 +3,6 @@
 course:{{object.title}}
 {%endblock%}
 
-
 {%block content%}
 <h1>{{object.title}}:</h1>
 
@@ -15,8 +14,15 @@ course:{{object.title}}
 	{%endfor%}
 </ul>
 <hr>
-
-
+<div class='module-content'>
+	{%for content in module.contents.all%}
+	{%with item=content.content_object%}
+		<h1>{{item.title}}</h1>
+		{{item.render}}
+		{%endwith%}
+	{%endfor%}
+	
+</div>
 
 
 {%endblock%}
