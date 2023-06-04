@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'students.apps.StudentsConfig',
     'embed_video',
     'debug_toolbar',
-    'redisboard'
+    'redisboard',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -165,3 +166,14 @@ INTERNAL_IPS = [
 CACHE_MIDDLEWARE_ALIAS='default'
 CACHE_MIDLEWARE_SECONDS=60*10 #10 minute
 CACHE_MIDDLEWARE_KEY_PREFIX='elearn'
+
+
+
+
+#rest_framework
+
+REST_FRAMEWORK={
+    'DEFAULT_PERMISSION_CLASSES':[
+        'rest_framework.permissions.DjangoModelPermissionsOrAnReadOnly'
+    ]
+}
