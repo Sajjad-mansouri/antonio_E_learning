@@ -9,6 +9,7 @@ from django.shortcuts import get_object_or_404,redirect
 from django.apps import apps
 from django.urls import reverse_lazy,reverse
 from django.db.models import Count
+from django.core.cache import cache
 from .forms import Modul_Formset
 from .models import Course,Content,Module,Subject
 from students.forms import CourseEnrollForm
@@ -142,6 +143,11 @@ class CourseListView(TemplateResponseMixin,View):
 	template_name='courses/course/list.html'
 
 	def get(self,request,subject=None):
+		subjects=cache.get('all_subjects')
+		if not subjects:
+			subjects=Subject.objects.annotate(total_courses=Count('courses'))
+			cache.set('all_subjects',subjectd)
+
 		subjects=Subject.objects.annotate(total_courses=Count('courses'))
 		courses=Course.objects.annotate(total_module=Count('modules'))
 
