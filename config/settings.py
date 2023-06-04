@@ -49,7 +49,9 @@ MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    # 'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
+    # 'django.middleware.cache.FetchFromCacheMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -155,4 +157,10 @@ CACHEES={
 #django debug toolbar
 INTERNAL_IPS = [
 '127.0.0.1',
+
 ]
+
+#per-site cache
+CACHE_MIDDLEWARE_ALIAS='default'
+CACHE_MIDLEWARE_SECONDS=60*10 #10 minute
+CACHE_MIDDLEWARE_KEY_PREFIX='elearn'
