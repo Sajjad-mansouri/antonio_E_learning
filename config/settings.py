@@ -42,9 +42,11 @@ INSTALLED_APPS = [
     'courses.apps.CoursesConfig',
     'students.apps.StudentsConfig',
     'embed_video',
+    'debug_toolbar'
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -143,7 +145,14 @@ LOGIN_REDIRECT_URL=reverse_lazy('student-course-list')
 
 CACHEES={
     'default':{
-    BACKEND:'django.core.cache.backends.memcached.PyMemcacheCache',
-    LOCATION:'127.0.0.1:11211'
+    'BACKEND':'django.core.cache.backends.memcached.PyMemcacheCache',
+    'LOCATION':'127.0.0.1:11211'
     }
 }
+
+
+
+#django debug toolbar
+INTERNAL_IPS = [
+'127.0.0.1',
+]
