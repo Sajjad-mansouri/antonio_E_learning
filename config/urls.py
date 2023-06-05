@@ -27,7 +27,8 @@ urlpatterns = [
     path('__debug__/',include('debug_toolbar.urls')),
     path('student/',include('students.urls')),
     path('',CourseListView.as_view(),name='courses'),
-    path('courses/',include('courses.urls'))
+    path('courses/',include('courses.urls')),
+    path('api/',include('courses.api.urls',namespace='api'))
 ]
 
 if settings.DEBUG:
